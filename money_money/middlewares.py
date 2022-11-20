@@ -7,7 +7,7 @@ from aiohttp import web
 
 @web.middleware
 async def middleware_logger(request: web.Request, handler: Any) -> web.Response:
-    text = f' request {request.method} {request.rel_url}'
+    text = f' request {request.remote} {request.method} {request.rel_url}'
     if request.method == 'POST':
         try:
             text += f' body={await request.json()}'
