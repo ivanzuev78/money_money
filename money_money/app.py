@@ -3,9 +3,9 @@ import logging
 
 from aiohttp import web
 
-from money_money.middlewares import middleware_logger
 from money_money import MoneyMoneyService
-from money_money.utils import parse_args, create_logger
+from money_money.middlewares import middleware_logger
+from money_money.utils import create_logger, parse_args
 from money_money.views import init_routes
 
 
