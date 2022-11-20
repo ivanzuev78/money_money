@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import sys
+from itertools import permutations
 from typing import Dict, List, Union
 
 import requests
@@ -20,6 +21,14 @@ class MoneyMoneyService(AbstractMoneyMoneyService):
         self._main_currency = 'rub'
         self.__exchange_rates[self._main_currency] = 1
         self.__info_is_outdated = False
+
+        self.__currencies_pairs = []
+        for cur_from, cur_to in permutations(self.currencies, 2):
+            if cur_to == self._main_currency:
+                continue
+            if (cur_to, cur_from) not in self.__currencies_pairs:
+                self.__currencies_pairs.append((cur_from, cur_to))
+
 
     @property
     def _all_rates_exists(self):
@@ -117,5 +126,11 @@ class MoneyMoneyService(AbstractMoneyMoneyService):
         return round(total, 2)
 
     def get_total_currency_amounts_text(self):
+        text_amount = '\n'.join(f'{cur}: {val}' for cur, val in self.__currency_amounts.items())
+        text_exchange_rate = ''
+        for cur_1, cur_2 in self.__currencies_pairs:
+            text_exchange_rate += f'\n{cur_1}-{cur_2}: {self.get_exchange_rate(cur_1, cur_2)}'
+
         amounts = map(self.get_total_currency_amount, self.currencies)
-        return 'sum: ' + ' / '.join([f'{amount or "-"} {cur}' for amount, cur in zip(amounts, self.currencies)])
+        text_total = '\nsum: ' + ' / '.join([f'{amount or "-"} {cur}' for amount, cur in zip(amounts, self.currencies)])
+        return '\n'.join([text_amount, text_exchange_rate, text_total])
