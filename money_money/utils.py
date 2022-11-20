@@ -33,4 +33,6 @@ def parse_args():
 def create_logger(debug=False):
     debug_lvl = logging.DEBUG if debug else logging.INFO
     logging.basicConfig(encoding='utf-8', level=debug_lvl, stream=sys.stdout)
-    logging.Logger.manager.getLogger('aiohttp.access').setLevel(logging.ERROR)
+    logging.Logger.manager.getLogger('aiohttp').setLevel(logging.ERROR)
+    logging.Logger.manager.getLogger('asyncio').setLevel(logging.ERROR)
+    logging.Logger.manager.getLogger('urllib3').setLevel(logging.ERROR)

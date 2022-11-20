@@ -10,10 +10,10 @@ from money_money.views import init_routes
 
 
 def init_app() -> web.Application:
-    logging.info('=========== Init app ===========')
-
     currencies, period, debug_mode = parse_args()
     create_logger(debug_mode)
+    logging.info('=========== Init app ===========')
+
     money_app = MoneyMoneyService(list(currencies.keys()), period)
     money_app.init_currencies(currencies)
 
