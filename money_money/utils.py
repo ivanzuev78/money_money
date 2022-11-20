@@ -10,7 +10,7 @@ def parse_args():
     parser.add_argument('--rub', type=float)
     parser.add_argument('--eur', type=float)
     parser.add_argument('--usd', type=float)
-    parser.add_argument('--debug', default=False)
+    parser.add_argument('--debug', default='False')
     args = parser.parse_args()
 
     currencies = {}
@@ -18,8 +18,10 @@ def parse_args():
     period = None
     for arg_name, arg_value in args.__dict__.items():
         if arg_name == 'debug':
-            if arg_value in (1, '1', 'True', 'y', 'Y'):
+            if arg_value in ('1', 'True', 'true', 'y', 'Y'):
                 debug_mode = True
+            elif arg_value not in ('0', 'False', 'false', 'n', 'N'):
+                raise ValueError('invalid agrument: --debug')
         elif arg_name == 'period':
             period = arg_value
         else:

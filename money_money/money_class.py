@@ -38,7 +38,7 @@ class MoneyMoneyService(AbstractMoneyMoneyService):
 
     async def print_sums(self):
         while True:
-            sleep_future = asyncio.ensure_future(asyncio.sleep(1))
+            sleep_future = asyncio.ensure_future(asyncio.sleep(60))
             if self.__info_is_outdated and self._all_rates_exists:
                 sys.stdout.write(self.get_total_currency_amounts_text() + '\n')
                 self.__info_is_outdated = False
