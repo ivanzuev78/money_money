@@ -1,7 +1,6 @@
 import asyncio
 import logging
 
-import aiohttp_cors as aiohttp_cors
 from aiohttp import web
 
 from money_money import MoneyMoneyService
@@ -23,13 +22,6 @@ def init_app() -> web.Application:
         client_max_size=10 ** 8,
         middlewares=[middleware_logger]
     )
-    aiohttp_cors.setup(app, defaults={
-        "*": aiohttp_cors.ResourceOptions(
-            expose_headers="*",
-            allow_headers="*",
-            allow_methods=['GET', 'POST']
-        )
-    })
     init_routes(app, money_app)
 
     return app
